@@ -51,7 +51,7 @@ userSchema.pre("save", async function (next) { // we not use call back function 
                                                 // enctyption takes time so use async function
     if(!this.isModified("password")){return next();}
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = awaitbcrypt.hash(this.password, 10)
     next()
 })
 
