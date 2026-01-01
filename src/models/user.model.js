@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import jwt from "jasonwebtoken";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
@@ -49,10 +49,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", async function (next) { // we not use call back function because it doesnt have this pointer
                                                 // enctyption takes time so use async function
-    if(!this.isModified("password")){return next();}
+    if(!this.isModified("password")){return;}
 
-    this.password = awaitbcrypt.hash(this.password, 10)
-    next()
+    this.password = await bcrypt.hash(this.password, 10)
 })
 
 userSchema.methods.isPasswordCorrect = async function (password) {
@@ -64,8 +63,8 @@ export const generateAccessToken = function (){
     {
       _id: this._id,
       email: this.email,
-      userName: this.username,
-      fullName: this.fullname
+      userName: this.userName,
+      fullName: this.fullName
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
